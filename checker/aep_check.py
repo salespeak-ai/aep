@@ -308,12 +308,38 @@ def _handshake_binding(endpoint: str, stream: str, c: Check, dl: Deadline) -> st
     return resolved
 
 
+def _parse_rpc(raw: bytes, content_type: str) -> Any:
+    """Pull a JSON-RPC response out of a body that may be SSE-framed.
+
+    MCP's SSE transport answers a POST with `text/event-stream` and carries the
+    JSON-RPC response inside a `data:` frame rather than returning it as the
+    bare body. Treating the body as JSON works only for plain HTTP transports,
+    and mis-reports a correct SSE server as malformed.
+    """
+    text = raw.decode("utf-8", "replace")
+    if "text/event-stream" in content_type.lower():
+        for line in text.splitlines():
+            if line.startswith("data:"):
+                try:
+                    return json.loads(line[5:].strip())
+                except json.JSONDecodeError:
+                    continue
+        return None
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        return None
+
+
 def _probe(url: str, c: Check, dl: Deadline) -> bool:
     body = json.dumps(PROBE).encode()
     try:
-        status, _, raw = http(
+        status, headers, raw = http(
             url, dl, 15.0, method="POST", body=body,
-            headers={"Content-Type": "application/json", "Accept": "application/json"},
+            headers={
+                "Content-Type": "application/json",
+                "Accept": "application/json, text/event-stream",
+            },
             max_bytes=256 * 1024,
         )
     except TimeoutError:
@@ -329,12 +355,19 @@ def _probe(url: str, c: Check, dl: Deadline) -> bool:
     if status != 200 or not raw.strip():
         c.fail("probe", "probe_empty", f"HTTP {status}, {len(raw)} bytes")
         return False
-    try:
-        json.loads(raw)
-    except json.JSONDecodeError:
-        c.fail("probe", "probe_malformed")
+
+    ctype = next((v for k, v in headers.items() if k.lower() == "content-type"), "")
+    rpc = _parse_rpc(raw, ctype)
+    if rpc is None:
+        c.fail("probe", "probe_malformed", ctype)
         return False
-    c.ok("probe")
+    if not isinstance(rpc, dict) or "result" not in rpc:
+        cause = "probe_error" if isinstance(rpc, dict) and "error" in rpc else "probe_malformed"
+        c.fail("probe", cause, str(rpc)[:200])
+        return False
+
+    tools = (rpc.get("result") or {}).get("tools")
+    c.ok("probe", tools=len(tools) if isinstance(tools, list) else None)
     return True
 
 
