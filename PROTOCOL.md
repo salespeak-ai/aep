@@ -1,4 +1,4 @@
-# MARK_NAME — Verification Protocol
+# AEP — Verification Protocol
 
 Version 2. Companion to `SPEC.md`. `SPEC.md` defines what the mark looks like.
 This document defines what it means, who may display it, and how that is checked.
@@ -24,7 +24,7 @@ narrow exception rather than the norm. See section 5.
 
 ## 1. The claim
 
-Displaying MARK_NAME asserts exactly this and nothing more:
+Displaying AEP asserts exactly this and nothing more:
 
 > At the time of the most recent successful check, this domain served a valid MCP
 > server card at the canonical well-known path, declaring an endpoint on this same
@@ -36,7 +36,7 @@ Every clause is machine-testable. The narrowness is deliberate and load-bearing.
 
 ## 2. Explicit non-goals
 
-The protocol does not check, and MARK_NAME does not assert:
+The protocol does not check, and AEP does not assert:
 
 - accuracy, completeness, or honesty of anything the endpoint returns
 - quality of the endpoint's answers
@@ -44,7 +44,7 @@ The protocol does not check, and MARK_NAME does not assert:
 - security posture, authentication strength, or data handling
 - the site's conduct toward agents in any respect other than the endpoint
 
-MARK_NAME asserts that a door exists and opens. It says nothing about what is
+AEP asserts that a door exists and opens. It says nothing about what is
 behind it. Any future proposal to check quality or trustworthiness should be
 rejected: a claim that cannot be falsified mechanically turns the mark into a
 trust seal, and trust seals rot without exception.

@@ -1,12 +1,12 @@
-# AEP — Agent Entry Point
+# AEP: Agent Entry Point
 
 A site with an AEP can be queried directly by an AI agent instead of crawled.
 
 This repository holds three things, all freely reusable:
 
-- **[PROTOCOL.md](PROTOCOL.md)** — what an AEP claim means and how it is checked.
-- **[checker/](checker/)** — a reference checker. Standard library only.
-- **[SPEC.md](SPEC.md) + [svg/](svg/)** — the mark a site displays when its claim passes.
+- **[PROTOCOL.md](PROTOCOL.md)**: what an AEP claim means and how it is checked.
+- **[checker/](checker/)**: a reference checker. Standard library only.
+- **[SPEC.md](SPEC.md) + [svg/](svg/)**: the mark a site displays when its claim passes.
 
 Nothing here is owned. The artwork is dedicated under CC0, no trademark is
 claimed, and the protocol is published so that anyone, including direct
@@ -98,12 +98,25 @@ repaired and the second matched exactly.
 
 ## Status
 
-Draft. The protocol is at version 2 and has been run against a production
-implementation, which it failed for a real defect — see PROTOCOL.md section 4,
-step 6, which exists because of that run.
+Draft, and running. The protocol is at version 2 and salespeak.ai passes it:
+
+```
+$ python3 checker/aep_check.py salespeak.ai
+PASS  salespeak.ai
+```
+
+It did not, at first. Running the checker against a real endpoint turned up
+three defects that reading the spec would not have: a missing step in the
+protocol (section 4, step 6, which exists because of that run), a server
+advertising an SSE callback that 403'd, and the checker itself rejecting a
+correct server whose reply was SSE-framed rather than bare JSON.
+
+Each was a check passing something broken, or failing something fine. That is
+the failure mode this whole design exists to prevent, so the defects are
+recorded here rather than quietly fixed.
 
 ## License
 
 CC0 1.0 Universal — see [LICENSE](LICENSE).
 
-No trademark is claimed over the name or the artwork — see [NOTICE.md](NOTICE.md).
+No trademark is claimed over the name or the artwork; see [NOTICE.md](NOTICE.md).
