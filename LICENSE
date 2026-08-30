@@ -1,0 +1,20 @@
+CC0 1.0 Universal
+
+The AEP specification, protocol, reference checker, and mark artwork in this
+repository are dedicated to the public domain under CC0 1.0 Universal.
+
+To the extent possible under law, the authors have waived all copyright and
+related or neighboring rights to this work. You may copy, modify, distribute,
+and use the work, including for commercial purposes, all without asking
+permission.
+
+No trademark is claimed over the name "AEP", over "Agent Entry Point", or over
+the mark artwork. Competitors of the authors may use all of it freely.
+
+The usage rules in SPEC.md describe conformity to the AEP specification. They
+are not license conditions: CC0 imposes none, and they are unenforceable by
+design.
+
+>>> TODO before publishing: replace this file with the full CC0 1.0 Universal
+>>> legal code, verbatim, from https://creativecommons.org/publicdomain/zero/1.0/legalcode
+>>> The summary above is not the license text.
