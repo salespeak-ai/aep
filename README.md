@@ -85,4 +85,6 @@ step 6, which exists because of that run.
 
 ## License
 
-CC0 1.0 Universal. No trademark is claimed. See [LICENSE](LICENSE).
+CC0 1.0 Universal — see [LICENSE](LICENSE).
+
+No trademark is claimed over the name or the artwork — see [NOTICE.md](NOTICE.md).
