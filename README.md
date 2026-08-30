@@ -6,7 +6,7 @@ This repository holds three things, all freely reusable:
 
 - **[PROTOCOL.md](PROTOCOL.md)** — what an AEP claim means and how it is checked.
 - **[checker/](checker/)** — a reference checker. Standard library only.
-- **The mark** — a visual sign a site displays when its claim currently passes.
+- **[SPEC.md](SPEC.md) + [svg/](svg/)** — the mark a site displays when its claim passes.
 
 Nothing here is owned. The artwork is dedicated under CC0, no trademark is
 claimed, and the protocol is published so that anyone, including direct
@@ -76,6 +76,25 @@ Nothing stops a site displaying the mark while its record says FAIL. The
 mechanism is contradiction, not enforcement: the mark links to a public record,
 so a site displaying an unearned mark is publishing a link to evidence against
 itself. That is the same mechanism that made the RSS icon meaningful.
+
+## The mark
+
+![AEP mark](png/aep-64.png)
+
+An asymmetric open doorway. Legible at 16 px, monochrome, inheriting one
+colour from context via `currentColor`. 12 px is a hard floor and has its own
+optical drawing rather than a scaled-down one.
+
+One state on public sites: open. Absence is the negative state, so a site
+whose check is failing simply stops displaying it rather than showing a
+broken variant. A closed state exists for verifier interfaces only.
+
+[SPEC.md](SPEC.md) is normative and written to be sufficient to redraw the
+mark with no image available. [REDRAW-TEST.md](REDRAW-TEST.md) records the
+test of that claim: reconstruct from prose alone with every coordinate list,
+path string, and image withheld, then diff. The first attempt failed by 20
+pixels because the prose never pinned vertical placement; the prose was
+repaired and the second matched exactly.
 
 ## Status
 
